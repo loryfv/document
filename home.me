@@ -1,0 +1,78 @@
+当然可以使用递归来生成 Pascal 三角形。递归版本的 Pascal 三角形生成函数将利用前一行来计算新行的值，类似于迭代版本，关键在于递归生成每一行。
+
+### 递归思路：
+1. 基础情况：如果`numRows`是1，返回含有一个元素1的列表。
+2. 否则，递归计算上一行，然后利用上一行生成当前行。
+3. 每个位置处的值是其正上方两个位置的值之和。
+4. 将新生成的行添加到结果中。
+
+### 实现代码：
+
+```python
+def generate_pascals_triangle(numRows):
+    
+    # Base case
+    if numRows == 1:
+        return [[1]]
+    
+    # Recursive call to generate the triangle for numRows-1
+    triangle = generate_pascals_triangle(numRows - 1)
+    
+    # Get the last row from the triangle generated for numRows-1
+    last_row = triangle[-1]
+    
+    # Initialize the current row with first element as 1
+    current_row = [1]
+    
+    # Fill in the middle values of the current row
+    for i in range(1, len(last_row)):
+        current_row.append(last_row[i - 1] + last_row[i])
+    
+    # Add the last element which is always 1
+    current_row.append(1)
+    
+    # Add the current row to the triangle
+    triangle.append(current_row)
+    
+    return triangle
+
+# 测试
+numRows = 5
+triangle = generate_pascals_triangle(numRows)
+for row in triangle:
+    print(row)
+```
+
+### 解释
+
+1. **基础情况：**
+   - 当 `numRows` 为 1 时，直接返回包含一个 `1` 的列表 `[[1]]`，即 Pascal 三角形的最顶层。
+
+2. **递归生成前一行：**
+   - 使用递归调用 `generate_pascals_triangle(numRows - 1)` 来获取前一行的 Pascal 三角形。
+
+3. **获取前一行：**
+   - `last_row = triangle[-1]` 取出前一行（即上一行的最后一行）。
+
+4. **初始化当前行：**
+   - 当前行的第一个元素恒为 `1`：`current_row = [1]`。
+
+5. **填充中间值：**
+   - 通过遍历前一行，从第 1 列到倒数第 2 列来计算当前行的中间值：`current_row.append(last_row[i - 1] + last_row[i])`。
+
+6. **添加最后一个值：**
+   - 当前行的最后一个元素恒为 `1`，所以添加一个 `1`：`current_row.append(1)`。
+
+7. **将当前行添加到结果中：**
+   - 最后，将当前行添加到生成的 Pascal 三角形中：`triangle.append(current_row)`。
+
+8. **返回结果：**
+   - 返回生成的 Pascal 三角形。
+
+### 时间和空间复杂度
+
+- **时间复杂度**：O(n^2)，因为生成 n 行，每行需要进行 n 次操作。
+- **空间复杂度**：O(n^2)，用于存储所有行的 Pascal 三角形。
+
+在实际应用中，递归版本通常不如迭代版本高效，因为递归调用增加了函数调用的开销，不过递归版本通常更简洁易读，尤其是在理解递归本身的概念时非常有帮助。希望通过这种递归实现，你能够更好地理解如何用递归生成 Pascal 三角形。
+
